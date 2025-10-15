@@ -1,11 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-// import data from "./data/bechdel-test.json";
 import data from "./data/enriched-collection.json";
 import MovieClip from "./components/MovieClip";
 
 export default function App() {
-  const [index, setIndex] = useState(1157);
+  const [index, setIndex] = useState(randomNumber(0, data.length - 1));
 
   function handleNextMovie() {
     if (index < data.length - 1) {
@@ -38,75 +37,130 @@ export default function App() {
   }
   // movieListJSX = data.map(movie => <li> {movie.title} </li>)
 
+  let movieGridJSX = [];
+  for (let i = 0; i < 24; i++) {
+    let movie = data[i];
+    movieGridJSX.push(
+      <img
+        key={movie.id}
+        onClick={() => changeMovie(i)}
+        className="movie-grid"
+        src={movie.poster}
+        alt={movie.title}
+      />
+    );
+  }
+
+  // function changeMovie({ nextIndex }) {
+  //   setIndex(nextIndex);
+  // }
+
+  // function changeMovie(id) {
+  //   const idx = data.findIndex((m) => String(m.id) === String(id));
+  //   if (idx !== -1) setIndex(idx);
+  // }
+
+  function randomNumber(a, b) {
+    return Math.floor(Math.random() * (b - a) + a);
+  }
+
+  function MovieTitle() {
+    return (
+      <div className="col-12 col-md-6">
+        <h1 className="movie-title">
+          {data[index].title} ({Math.trunc(data[index].year)})
+        </h1>
+      </div>
+    );
+  }
+
+  function MovieNavButtons() {
+    return (
+      <div className="d-flex justify-content-center">
+        <div className="button-container">
+          <button className="btn btn-secondary" type="button" onClick={goStart}>
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handlePreviousMovie}
+          >
+            Previous
+          </button>
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handleNextMovie}
+          >
+            Next
+          </button>
+          <button className="btn btn-secondary" type="button" onClick={goEnd}>
+            {">>"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="containter">
-        <div className="my-container">
+        <div className="my-container border-1">
           <header className="mb-3">
             <div className="row g-3 align-items-center">
-              <div className="col-12 col-md-6">
-                <h1 className="movie-name">
-                  {data[index].title} ({Math.trunc(data[index].year)})
-                </h1>
-              </div>
+              <MovieTitle />
+
               <div className="col-12 col-md-6 text-md-end">
-                <h1>Movie Lookup</h1>
-                <p>
-                  index: {index} | length: {data.length - 1}
-                </p>
-                <div className="button-outter-container">
-                  <div className="button-container">
-                    <button
-                      className="btn btn-secondary"
-                      type="button"
-                      onClick={goStart}
-                    >
-                      {"<<"}
-                    </button>
-                    <button
-                      className="btn btn-secondary"
-                      type="button"
-                      onClick={handlePreviousMovie}
-                    >
-                      Previous
-                    </button>
-                    <button
-                      className="btn btn-secondary"
-                      type="button"
-                      onClick={handleNextMovie}
-                    >
-                      Next
-                    </button>
-                    <button
-                      className="btn btn-secondary"
-                      type="button"
-                      onClick={goEnd}
-                    >
-                      {">>"}
-                    </button>
+                <div className="d-flex row justify-content-end">
+                  <div className="col-6">
+                    <div className="page-title">
+                      <h1>Oby & Aucoin's</h1>
+                      <h4>Movie Profit Calculator</h4>
+                      <p>
+                        index: {index} | length: {data.length - 1}
+                      </p>
+                    </div>
+
+                    <MovieNavButtons />
                   </div>
                 </div>
               </div>
             </div>
           </header>
-          <main>
+          <main className="">
             <article>
               <section className="image">
                 <img className="img-fluid" src={data[index].poster} />
               </section>
-              <section className="description">
+              <section className="trailer">
                 <MovieClip trailerId={data[index].yt_trailer_id} />
               </section>
             </article>
-            <article className="d-flex info">
-              <section className="text-start me-4">
+
+            <article className="d-flex align-items-start gap-4 flex-nowrap info">
+              <section className="description text-start">
                 <p>{data[index].description}</p>
               </section>
-              <section className="d-flex text-start ms-4 details">
+
+              <section className="details-pane d-flex text-start">
                 <div className="details">
-                  <ul className="details">
+                  <ul>
                     <li>
-                      <b>Released:</b> {data[index].released}
+                      <b>4Producers:</b> {data[index].producers}
+                    </li>
+                    <li>
+                      <b>Directors:</b> {data[index].directors}
+                    </li>
+                    <li>
+                      <b>Stars:</b> {data[index].stars}
+                    </li>
+                  </ul>
+                </div>
+                <div className="details">
+                  <ul>
+                    <li>
+                      <b>Released:</b> {formatDate(data[index].released)}
                     </li>
                     <li>
                       <b>Runtime:</b> {data[index].runtime}
@@ -115,35 +169,28 @@ export default function App() {
                       <b>Rating:</b> {data[index].rating}
                     </li>
                     <li>
-                      <b>Genre(s):</b> {data[index].genres}
+                      <b>Genre(s):</b> {formatGenres(data[index].genres)}
                     </li>
                     {data[index].budget !== "-" && (
                       <li>
-                        <b>Budget:</b> {data[index].budget}
+                        <b>Budget:</b> {convertToCurrency(data[index].budget)}
                       </li>
                     )}
                     {data[index].worldwide_gross !== "-" && (
                       <li>
-                        <b>Gross:</b> {data[index].worldwide_gross}
+                        <b>Gross:</b>{" "}
+                        {convertToCurrency(data[index].worldwide_gross)}
                       </li>
                     )}
                   </ul>
                 </div>
-                <div className="details">
-                  <ul className="details">
-                    <li>
-                      <b>Producers:</b> {data[index].producers}
-                    </li>
-                    <li>
-                      <b>Directors:</b> {data[index].directors}
-                    </li>
-                    <li>
-                      <b>Stars:</b> {data[index].stars}
-                    </li>
-                    <li>
-                      <b>Genre(s):</b> {data[index].genres}
-                    </li>
-                  </ul>
+              </section>
+            </article>
+
+            <article>
+              <section>
+                <div className="d-flex flex-wrap justify-content-center movie-grid">
+                  {movieGridJSX}
                 </div>
               </section>
             </article>
@@ -152,4 +199,37 @@ export default function App() {
       </div>
     </>
   );
+}
+
+function convertToCurrency(amount) {
+  const usdFormatted = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+  }).format(amount);
+
+  return usdFormatted;
+}
+
+function formatGenres(genreString) {
+  if (!genreString) return "";
+  return genreString
+    .split(",") // split into an array
+    .map((g) => g.trim()) // remove extra spaces
+    .map((g) => g.charAt(0).toUpperCase() + g.slice(1)) // capitalize
+    .join(", "); // join back with comma+space
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+
+  const date = new Date(dateStr);
+  if (isNaN(date)) return dateStr; // fallback if invalid date
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
