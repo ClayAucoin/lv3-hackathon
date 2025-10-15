@@ -38,7 +38,7 @@ export default function App() {
   // movieListJSX = data.map(movie => <li> {movie.title} </li>)
 
   let movieGridJSX = [];
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 26; i++) {
     let movie = data[i];
     movieGridJSX.push(
       <img
@@ -99,7 +99,7 @@ export default function App() {
   return (
     <>
       <div className="containter">
-        <div className="my-container border-1">
+        <div className="my-container">
           <header className="mb-3">
             <div className="row g-3 align-items-center">
               <MovieTitle />
