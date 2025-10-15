@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import MovieView from "./pages/MovieView";
+import Profit from "./pages/Profit";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -24,6 +25,10 @@ export default function App() {
     setCurrentPage("movieview");
   }
 
+  function goToProfit() {
+    setCurrentPage("profit")
+  }
+
   let pageContent = <Home />;
 
   if (currentPage === "home") {
@@ -34,6 +39,8 @@ export default function App() {
     pageContent = <About />;
   } else if (currentPage === "movieview") {
     pageContent = <MovieView />;
+  } else if (currentPage === "profit") {
+    pageContent = <Profit />;
   }
 
   return (
@@ -50,6 +57,9 @@ export default function App() {
       </button>
       <button type="button" onClick={goToMovieView}>
         Movie View
+      </button>
+      <button type="button" onClick={goToProfit}>
+        Profit Calculator
       </button>
       {pageContent}
     </>

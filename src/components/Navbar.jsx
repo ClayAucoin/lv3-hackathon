@@ -7,6 +7,7 @@ export default function Navbar() {
       <Link to="/movieview">Movie View</Link>
       <Link to="/about">About</Link>
       {/* <Link to="/contact">Contact</Link> */}
+      <Link to="/Profit">Profit Calculator</Link>
     </nav>
   );
 }
