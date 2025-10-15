@@ -51,14 +51,7 @@ export default function App() {
     );
   }
 
-  // function changeMovie({ nextIndex }) {
-  //   setIndex(nextIndex);
-  // }
-
-  // function changeMovie(id) {
-  //   const idx = data.findIndex((m) => String(m.id) === String(id));
-  //   if (idx !== -1) setIndex(idx);
-  // }
+  // main
 
   function randomNumber(a, b) {
     return Math.floor(Math.random() * (b - a) + a);
