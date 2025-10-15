@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./MovieView.css";
-import data from "./data/enriched-collection.json";
-import MovieClip from "./components/MovieClip";
+import data from "../data/enriched-collection.json";
+import MovieClip from "../components/MovieClip";
 
 export default function MovieView() {
   const [index, setIndex] = useState(randomNumber(0, data.length - 1));

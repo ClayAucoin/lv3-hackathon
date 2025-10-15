@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
+import MovieView from "./pages/MovieView";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -19,6 +20,10 @@ export default function App() {
     setCurrentPage("about");
   }
 
+  function goToMovieView() {
+    setCurrentPage("movieview");
+  }
+
   let pageContent = <Home />;
 
   if (currentPage === "home") {
@@ -27,6 +32,8 @@ export default function App() {
     pageContent = <Gallery />;
   } else if (currentPage === "about") {
     pageContent = <About />;
+  } else if (currentPage === "movieview") {
+    pageContent = <MovieView />;
   }
 
   return (
@@ -40,6 +47,9 @@ export default function App() {
       </button>
       <button type="button" onClick={goToAbout}>
         About
+      </button>
+      <button type="button" onClick={goToMovieView}>
+        Movie View
       </button>
       {pageContent}
     </>
