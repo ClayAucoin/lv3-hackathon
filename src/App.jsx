@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import MovieView from "./pages/MovieView";
 import data from "./data/enriched-collection.json";
+import Profit from "./pages/Profit";
 
 // build genre list
 const ALL_GENRES = Array.from(
@@ -53,6 +54,10 @@ export default function App() {
     setCurrentGenre(ALL_GENRES[prev]);
   }
 
+  function goToProfit() {
+    setCurrentPage("profit");
+  }
+
   let pageContent = <Home />;
 
   if (currentPage === "home") {
@@ -78,6 +83,9 @@ export default function App() {
         currentGenre={currentGenre}
       />
     );
+    pageContent = <MovieView />;
+  } else if (currentPage === "profit") {
+    pageContent = <Profit />;
   }
 
   return (
@@ -85,6 +93,16 @@ export default function App() {
       {/* <button type="button" onClick={goToCalculator}>
         Calculator
       </button> */}
+      <div>app</div>
+      <button type="button" onClick={goToHome}>
+        Home
+      </button>
+      <button type="button" onClick={goToMovieView}>
+        Movie View
+      </button>
+      <button type="button" onClick={goToProfit}>
+        Profit Calculator
+      </button>
       {pageContent}
     </>
   );
