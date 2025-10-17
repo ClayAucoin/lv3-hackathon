@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import MovieView from "./pages/MovieView";
 import data from "./data/enriched-collection.json";
 
+// build genre list
 const ALL_GENRES = Array.from(
   new Set(
     data
@@ -81,8 +82,8 @@ export default function App() {
 
   return (
     <>
-      {/* <button type="button" onClick={goToHome}>
-        Home
+      {/* <button type="button" onClick={goToCalculator}>
+        Calculator
       </button> */}
       {pageContent}
     </>
