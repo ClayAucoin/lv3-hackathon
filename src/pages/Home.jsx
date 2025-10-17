@@ -1,37 +1,49 @@
+import React from "react";
 import "./Home.css";
 
 export default function Home(props) {
-  // retrieve props
-  const {
-    data,
-    currentGenre,
-    onSelectMovie,
-    allGenres,
-    onChangeGenre,
-    onFirstGenre,
-    onLastGenre,
-    onPrevGenre,
-    onNextGenre,
-  } = props;
+  const { data, currentGenre, onSelectMovie, onChangeGenre } = props;
 
-  // build movie grid for current genre
+  // build unique genre list
+  const allGenres = Array.from(
+    new Set(
+      data
+        .flatMap((r) => (r.genres || "").split(","))
+        .map((g) => g.trim().toLowerCase())
+        .filter(Boolean)
+    )
+  )
+    .map((g) => g.charAt(0).toUpperCase() + g.slice(1))
+    .sort((a, b) => a.localeCompare(b));
+
+  // build genre buttons
+  const genreButtonsJSX = [];
+  for (let i = 0; i < allGenres.length; i++) {
+    genreButtonsJSX.push(
+      <button
+        key={allGenres[i]}
+        id={allGenres[i]}
+        onClick={() => currentGenreClick(allGenres[i])}
+        className={`btn btn-primary ${
+          allGenres[i] === currentGenre ? "is-active" : ""
+        }`}
+      >
+        {allGenres[i]}
+      </button>
+    );
+  }
+
+  // build movie grid according to currentGenre
   let movieGridJSX = [];
-  for (let index = 0; index < data.length; index++) {
-    const movie = data[index];
+  for (let i = 0; i < data.length; i++) {
+    const movie = data[i];
     const movieGenres = movie.genres || "";
 
-    if (
-      movieGenres
-        .toLowerCase()
-        .split(",")
-        .map((g) => g.trim())
-        .includes(currentGenre.toLowerCase())
-    ) {
+    if (movieGenres.includes(currentGenre.toLowerCase())) {
       movieGridJSX.push(
         <img
-          key={index}
-          onClick={() => onSelectMovie(index)}
-          id={index}
+          key={i}
+          onClick={() => onSelectMovie(i)}
           className="movie-grid"
           src={movie.poster}
           alt={movie.title}
@@ -49,13 +61,37 @@ export default function Home(props) {
       .includes(currentGenre.toLowerCase())
   );
 
+  // handle genre navigation buttons
+  function firstGenre() {
+    if (allGenres.length) onChangeGenre(allGenres[0]);
+  }
+
+  function lastGenre() {
+    if (allGenres.length) onChangeGenre(allGenres[allGenres.length - 1]);
+  }
+
+  function nextGenre() {
+    if (!allGenres.length) return;
+    const i = allGenres.indexOf(currentGenre);
+    const next = i === -1 ? 0 : Math.min(i + 1, allGenres.length - 1);
+    onChangeGenre(allGenres[next]);
+  }
+
+  function prevGenre() {
+    if (!allGenres.length) return;
+    const i = allGenres.indexOf(currentGenre);
+    const prev = i === -1 ? 0 : Math.max(i - 1, 0);
+    onChangeGenre(allGenres[prev]);
+  }
+
+  function currentGenreClick(genre) {
+    onChangeGenre(genre);
+  }
+
   return (
     <>
       <div className="containter">
         <main>
-          {/* ************************************************ */}
-          {/* **              side-by-side                  ** */}
-          {/* ************************************************ */}
           <header className="mb-3">
             <div className="row">
               <div className="col-4 align-self-center page-title">
@@ -64,50 +100,12 @@ export default function Home(props) {
               </div>
               <div className="col-8">
                 <section className="d-flex justify-content-center genre-btns">
-                  <div className="genre-flex">
-                    {allGenres.map((genre) => (
-                      <button
-                        onClick={() => onChangeGenre(genre)}
-                        className={`btn btn-primary ${
-                          genre === currentGenre ? "is-active" : ""
-                        }`}
-                      >
-                        {genre}
-                      </button>
-                    ))}
-                  </div>
+                  <div className="genre-flex">{genreButtonsJSX}</div>
                 </section>
               </div>
             </div>
           </header>
-          {/* ************************************************ */}
-          {/* **             stacked                        ** */}
-          {/* ************************************************ */}
-          {/* <header className="mb-3">
-            <div className="page-title">
-              <h1>Oby-Aucoin's</h1>
-              <h4>Movie List</h4>
-            </div>
-          </header>
-          <article>
-            <section className="d-flex justify-content-center genre-btns">
-              <div className="genre-flex">
-                {allGenres.map((genre) => (
-                  <button
-                    onClick={() => onChangeGenre(genre)}
-                    className={`btn btn-primary ${
-                      genre === currentGenre ? "is-active" : ""
-                    }`}
-                  >
-                    {genre}
-                  </button>
-                ))}
-              </div>
-            </section>
-          </article> */}
-          {/* ************************************************ */}
-          {/* **                                            ** */}
-          {/* ************************************************ */}
+
           <article>
             <section className="current-genre">
               {currentGenre && (
@@ -118,16 +116,16 @@ export default function Home(props) {
 
               {currentGenre && (
                 <div className="genre-nav-buttons">
-                  <button className="genre-nav-button" onClick={onFirstGenre}>
+                  <button className="genre-nav-button" onClick={firstGenre}>
                     ⏮
                   </button>
-                  <button className="genre-nav-button" onClick={onPrevGenre}>
+                  <button className="genre-nav-button" onClick={prevGenre}>
                     ◀
                   </button>
-                  <button className="genre-nav-button" onClick={onNextGenre}>
+                  <button className="genre-nav-button" onClick={nextGenre}>
                     ▶
                   </button>
-                  <button className="genre-nav-button" onClick={onLastGenre}>
+                  <button className="genre-nav-button" onClick={lastGenre}>
                     ⏭
                   </button>
                 </div>

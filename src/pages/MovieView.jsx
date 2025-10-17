@@ -1,9 +1,10 @@
 import "./MovieView.css";
 import MovieClip from "../components/MovieClip";
+import data from "../data/enriched-collection.json";
 
 export default function MovieView(props) {
   // retrieve props
-  const { movieIndex, data, onBackHome, currentGenre } = props;
+  const { movieIndex, onBackHome, currentGenre } = props;
   const index = Number.isInteger(movieIndex) ? movieIndex : 0;
 
   const movie = data[index];
