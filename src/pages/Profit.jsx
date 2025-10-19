@@ -96,17 +96,17 @@ export default function Profit() {
  }
 
     
-  //filter genre and rating functions
-  function handleGenre() {
-    for (let i = 0; i < data.length; i++) {
-      if (genre === data[i].genre) {
-       genreTemp.push(data[i].genre);
-      }
-    }
-     setFilteredGenreList(genreTemp);
-        console.log(genreTemp);
+  // //filter genre and rating functions
+  // function handleGenre() {
+  //   for (let i = 0; i < data.length; i++) {
+  //     if (genre === data[i].genre) {
+  //      genreTemp.push(data[i].genre);
+  //     }
+  //   }
+  //    setFilteredGenreList(genreTemp);
+  //       console.log(genreTemp);
         
-  }
+  // }
 
   // function MovieDisplay() {
   //   return (
@@ -119,15 +119,15 @@ export default function Profit() {
   //   );
   // }
 
-  function handleRating() {
-    for (let i = 0; i < data.length; i++) {
-      if (rating === data[i].rating) {
-        setFilteredRatingList(filteredRatingList);
-        console.log(filteredRatingList);
-      }
-    }
+  // function handleRating() {
+  //   for (let i = 0; i < data.length; i++) {
+  //     if (rating === data[i].rating) {
+  //       setFilteredRatingList(filteredRatingList);
+  //       console.log(filteredRatingList);
+  //     }
+  //   }
     
-  }
+  // }
 
   //Profit Button component
   function Buttons({ onClick }) {
@@ -164,15 +164,15 @@ export default function Profit() {
     <>
       <div className="profitPage">
         <h1>Movies by Profit</h1>
-        <h2>Less than 30% Profit Range</h2>
+        {/* <h2>Less than 30% Profit Range</h2>
         <div className="filter-container">
           <h3>Filter By:</h3>
           <button className="button" onClick={handleGenre}>Genre</button>
           <button className="button" onClick={handleRating}>Rating</button>
-        </div>
+        </div> */}
         <div className="movie-display">
           {/* <MovieDisplay /> */}
-          {filteredGenreList}
+          {/* {filteredGenreList} */}
         </div>
         <div className="profit-output">
           <ProfitScreen />
