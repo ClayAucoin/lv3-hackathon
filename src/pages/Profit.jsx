@@ -120,7 +120,7 @@ export default function Profit() {
   // }
 
   //Profit Button component
-  function Buttons({ onClick }) {
+  function Buttons() {
     return (
       <>
         <button className="button" onClick={() => findProfit30()}>
