@@ -13,6 +13,10 @@ function App() {
     setCurrentPage("home");
   }
 
+  function goToProfit() {
+    setCurrentPage("profit");
+  }
+
   let pageContent = <Home data={data} onSelectMovie={handleSelectMovie} />;
 
   if (currentPage === "home") {
@@ -36,6 +40,10 @@ function App() {
     );
   }
 
+  if (currentPage === "profit") {
+    pageContent = <Profit />;
+  }
+
   function handleSelectMovie(index) {
     setSelectedMovieIndex(index);
     setCurrentPage("movieview");
@@ -43,9 +51,12 @@ function App() {
 
   return (
     <>
-      {/* <button type="button" onClick={goToHome}>
+      <button type="button" onClick={goToHome}>
         Home
-      </button> */}
+      </button>
+      <button type="button" onClick={goToProfit}>
+        Profit Calculator
+      </button>{" "}
       {pageContent}
     </>
   );
