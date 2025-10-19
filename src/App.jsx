@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import MovieView from "./pages/MovieView";
 import data from "./data/enriched-collection.json";
+import Profit from "./pages/Profit";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
