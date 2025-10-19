@@ -1,57 +1,54 @@
 import { useState } from "react";
 import "./App.css";
 import Home from "./pages/Home";
-import Gallery from "./pages/Gallery";
-import About from "./pages/About";
 import MovieView from "./pages/MovieView";
+import data from "./data/enriched-collection.json";
 
-export default function App() {
+function App() {
   const [currentPage, setCurrentPage] = useState("home");
+  const [selectedMovieIndex, setSelectedMovieIndex] = useState(0);
+  const [currentGenre, setCurrentGenre] = useState("");
 
   function goToHome() {
     setCurrentPage("home");
   }
 
-  function goToGallery() {
-    setCurrentPage("gallery");
-  }
-
-  function goToAbout() {
-    setCurrentPage("about");
-  }
-
-  function goToMovieView() {
-    setCurrentPage("movieview");
-  }
-
-  let pageContent = <Home />;
+  let pageContent = <Home data={data} onSelectMovie={handleSelectMovie} />;
 
   if (currentPage === "home") {
-    pageContent = <Home />;
-  } else if (currentPage === "gallery") {
-    pageContent = <Gallery />;
-  } else if (currentPage === "about") {
-    pageContent = <About />;
-  } else if (currentPage === "movieview") {
-    pageContent = <MovieView />;
+    pageContent = (
+      <Home
+        data={data}
+        onSelectMovie={handleSelectMovie}
+        currentGenre={currentGenre}
+        onChangeGenre={setCurrentGenre}
+      />
+    );
+  }
+
+  if (currentPage === "movieview") {
+    pageContent = (
+      <MovieView
+        movieIndex={selectedMovieIndex}
+        onBackHome={goToHome}
+        currentGenre={currentGenre}
+      />
+    );
+  }
+
+  function handleSelectMovie(index) {
+    setSelectedMovieIndex(index);
+    setCurrentPage("movieview");
   }
 
   return (
     <>
-      <div>app</div>
-      <button type="button" onClick={goToHome}>
+      {/* <button type="button" onClick={goToHome}>
         Home
-      </button>
-      <button type="button" onClick={goToGallery}>
-        Gallery
-      </button>
-      <button type="button" onClick={goToAbout}>
-        About
-      </button>
-      <button type="button" onClick={goToMovieView}>
-        Movie View
-      </button>
+      </button> */}
       {pageContent}
     </>
   );
 }
+
+export default App;
